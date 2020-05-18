@@ -13,11 +13,14 @@
        <input type="text" name="nama" class="form-control" id="exampleInputEmail1" placeholder="Judul film" value="{{$transaction->nama}}">
          </div>
          <div class="form-group">
+         <label for="exampleInputEmail1">EMAIL</label>
+         <input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Email" value="{{$transaction->email}}">
+           </div>
+         <div class="form-group">
            <label for="exampleInputEmail1">NO HANDPHONE</label>
        <input type="number" class="form-control" name="no_telp" id="exampleInputPassword1" placeholder="Genre" value="{{$transaction->no_telp}}">
          </div>
-    
-         <div class="form-group">
+       <div class="form-group">
             <label for="exampleInputEmail1">KODE FILM</label>
         <input type="text" class="form-control" name="kode_film" id="exampleInputEmail1" placeholder="Negara" value="{{$transaction->kode_film}}">
           </div>

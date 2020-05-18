@@ -7,9 +7,10 @@
 <meta name="keywords" content="Minimal Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">  
 <link rel='stylesheet' type='text/css' href="{{asset('admin/css/bootstrap.min.css')}}" />
 <!-- Custom Theme files -->
+<link rel="icon" type="image/png" href="{{asset('admin/images/sifilm.png')}}"/>
 <link rel='stylesheet' type='text/css' href="{{asset('admin/css/style.css')}}" />
 <link rel="stylesheet" href="{{asset('admin/css/font-awesome.css')}} "/> 
 <script type="text/javascript" src="{{asset('admin/js/jquery.min.js')}}"> </script>
@@ -74,8 +75,36 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!--scrolling js-->
 	<script src="{{asset('admin/js/jquery.nicescroll.js')}}"></script>
 	<script src="{{asset('admin/js/scripts.js')}}"></script>
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
 	<!--//scrolling js-->
-    
+
+	<script>
+		$(document).ready(function(){
+		  $('#datatable').DataTable({
+			processing:true,
+			serverside:true,
+			ajax:"{{route('ajax.get.data.film')}}",
+			columns:[
+			  {data:'kode_film', name:'kode_film'},
+			  {data:'judul_film', name:'judul_film'},
+			  {data:'genre_film', name:'genre_film'},
+			  {data:'negara', name:'negara'},
+			  {data:'tahun', name:'tahun'},
+			  {data:'harga', name:'harga'},
+			  {data:'status', name:'status'},
+			  {data:'aksi', name:'aksi'},
+			]
+		  });
+
+		  $('body').on('click','.delete',function(){
+			onclick="return confirm('Are you sure?')"
+		  });
+		});
+	  </script>
+
+
+	
+	
 
 </body>
 </html>

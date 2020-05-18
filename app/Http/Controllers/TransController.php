@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Exports\TransExport;
+use PDF;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\Controller;
+use App\Mail\WarnMail;
+use Illuminate\Support\Facades\Mail;
 
 class TransController extends Controller
 {
@@ -96,5 +102,26 @@ class TransController extends Controller
         $transaction = \App\trans::find($id);
         $transaction->delete($transaction);
         return redirect('/transaction')->with('sukses', 'Data Berhasil di hapus!');
+    }
+
+    public function export_excel()
+	{
+		return Excel::download(new TransExport, 'Transaksi.xlsx');
+    }
+    
+    public function cetak_pdf()
+    {
+    	$trans = \App\Trans::all();
+ 
+    	$pdf = PDF::loadview('transaksi.trans_pdf',['trans'=>$trans]);
+    	return $pdf->download('list-transaksi-pdf');
+    }
+
+    public function email($email)
+    {
+        $trans = \App\Trans::find($email);
+        Mail::to($trans)->send(new WarnMail());
+ 
+		return response()->json("Email send successfully!");
     }
 }

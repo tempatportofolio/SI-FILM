@@ -35,11 +35,14 @@
     <input type="text" class="form-control" name="status" id="exampleInputEmail1" placeholder="Status" value="{{$film->status}}">
       </div>
  
-      <div class="form-group">
+      <div class="form-group{{$errors->has('picture') ? ' has-error' : ''}}">
         <label for="exampleInputFile">File input</label>
         <input name="picture" type="file" id="exampleInputFile">
         <p class="help-block">Insert Film Cover</p>
       </div>
+      @if($errors->has('picture'))
+                      <span class="help-block">{{$errors->first('picture')}}</span>
+                  @endif
      
      <button type="submit" class="btn btn-warning">Update</button>
      <a href="/film" class="btn btn-danger">Cancel</a>

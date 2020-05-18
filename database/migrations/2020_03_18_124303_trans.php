@@ -16,6 +16,7 @@ class Trans extends Migration
         schema::create('trans', function(Blueprint $table){
             $table->id();
             $table->string('nama');
+            $table->string('email');
             $table->string('no_telp');
             $table->string('kode_film');
             $table->date('tgl_pinjam');

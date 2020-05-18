@@ -10,12 +10,15 @@
       <div class="blank">
         <div class="blank-page">
        <div class="right">
+        <a href="/transaction/export_excel" class="btn btn-success my-3" target="_blank">EXPORT EXCEL</a>
         <button style="background" type="button" class="btn btn-info text-sub btn-lg" data-toggle="modal" data-target="#exampleModal">Tambah Transaksi</button>
-       </div>
+        <a href="/transaction/cetak_pdf" class="btn btn-danger" target="_blank">CETAK PDF</a>
+      </div>
         <table class="table table-hover">
             <thead>
               <tr>
                 <th>NAMA PENYEWA</th>
+                <th>EMAIL</th>
                 <th>NO HANDPHONE</th>
                 <th>KODE FILM</th>
                 <th>TANGGAL PINJAM</th>
@@ -27,11 +30,13 @@
                 @foreach ($data1 as $trans)
                 <tr>
                     <td>{{$trans->nama}}</td>
+                    <td>{{$trans->email}}</td>
                     <td>{{$trans->no_telp}}</td>
                     <td>{{$trans->kode_film}}</td>
                     <td>{{$trans->tgl_pinjam}}</td>
                     <td>{{$trans->tgl_kembali}}</td>
                     <td>
+                    <a href="/transaction/{{$trans->id}}/kirimemail" class="btn btn-success btn-sm">Reminder</a>
                     <a href="/transaction/{{$trans->id}}/edit" class="btn btn-warning btn-sm">Edit</a>
                     <a href="/transaction/{{$trans->id}}/destroy" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm">Delete</a>
                     </td>
@@ -56,6 +61,10 @@
                     <div class="form-group">
                       <label for="exampleInputEmail1">NAMA PENYEWA</label>
                       <input name="nama" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nama">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Email</label>
+                      <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">NO HANDPHONE</label>

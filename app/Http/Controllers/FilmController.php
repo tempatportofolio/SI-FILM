@@ -2,7 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\FilmExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 use Illuminate\Http\Request;
+use Yajra\DataTables\Html\Builder;
+use App\Http\Controllers\Controller;
+use App\DataTables\filmDataTable;
+use DataTables;
+use PDF;
+use App\film;
 
 class FilmController extends Controller
 {
@@ -13,11 +22,14 @@ class FilmController extends Controller
      */
     public function index(Request $request)
     {
+
+
         if($request->has('cari')){
-            $data = \App\film::where('judul_film', 'LIKE', '%'.$request->cari.'%')->get();
+            $data = \App\film::where('judul_film', 'LIKE', '%'.$request->cari.'%')->paginate();
         }else {
             $data = \App\film::all();
         }
+
         return view('film.index',['data' => $data]);
     }
 
@@ -28,6 +40,13 @@ class FilmController extends Controller
      */
     public function create(Request $request)
     {
+        $this->validate($request,[
+            'kode_film' => 'required|min:2|unique:film',
+            'judul_film' => 'required|min:1',
+            'harga' => 'required',
+            'status' => 'required',
+            'picture' => 'mimes:jpeg,png'
+        ]);
         
        $film =  \App\Film::create($request->all());
         return redirect('/film')->with('sukses','Data Berhasil di input');
@@ -77,6 +96,11 @@ class FilmController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $this->validate($request,[
+            'picture' => 'mimes:jpeg,png',
+        ]);
+
         $film = \App\film::find($id);
         $film->update($request->all());
         if($request->hasFile('picture')){
@@ -99,4 +123,34 @@ class FilmController extends Controller
         $film->delete($film);
         return redirect('/film')->with('sukses', 'Data Berhasil di hapus!');
     }
+    
+    function getdatafilm()
+    {
+        $film = \App\film::select('film.*');
+
+        return \DataTables::eloquent($film)
+        ->addColumn('aksi', function($f){
+            return '
+            <a href="/film/'.$f->id.'/detail" class="btn btn-success btn-sm">Detail</a>
+            <a href="/film/'.$f->id.'/edit" class="btn btn-warning btn-sm">Edit</a>
+            <a href="/film/'.$f->id.'/destroy" class="btn btn-danger btn-sm">Delete</a>
+            ';
+        })
+        ->rawColumns(['aksi'])
+        ->toJson();
+    }
+
+    public function export_excel()
+    {
+        return Excel::download(new FilmExport, 'films.xlsx');
+    }
+
+    public function cetak_pdf()
+    {
+    	$film = \App\Film::all();
+ 
+    	$pdf = PDF::loadview('film.film_pdf',['film'=>$film]);
+    	return $pdf->download('list-film-pdf');
+    }
+
 }
